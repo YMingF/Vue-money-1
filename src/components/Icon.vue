@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <svg class="icon">  
-            <use :xlink:href='"#"+name' />
-        </svg>  
-    </div>
+    <svg class="icon">  
+        <use :xlink:href='"#"+name' /> <!--调用外部属性-->
+    </svg>  
 </template>
 
 <script lang='ts'>
@@ -11,7 +9,7 @@
     try {importAll(require.context('../assets/icons', true, /\.svg$/));} catch (error) {console.log(error);}
     export default {
         name:"Icon",
-        props:['name']
+        props:['name'] //外部属性
         
     }
 </script>
@@ -22,5 +20,7 @@
         vertical-align: -0.15em;
         fill: currentColor;
         overflow: hidden;
+        
         }
 </style>
+
