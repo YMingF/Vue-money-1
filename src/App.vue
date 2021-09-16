@@ -12,12 +12,9 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
   line-height: 1.5;
   font-family: $font-kai;
   color: #333;
-}
-a {
-  text-decoration: none;
-  color: inherit;
 }
 </style>
