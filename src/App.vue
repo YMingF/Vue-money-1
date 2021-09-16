@@ -1,40 +1,23 @@
 <template>
-  <div>
-  <router-view/>
+  <div id="app">
+    <router-view />
   </div>
 </template>
 
-<style lang="scss"> //因为要影响全局,所以样式不加scoped
- *{
-   margin: 0;padding: 0;
-   box-sizing: border-box;
+<style lang="scss">
+//因为要影响全局,所以样式不加scoped
+@import "~@/assets/style/reset.scss";
+@import "~@/assets/style/helper.scss";
 
- }
- body{
-   line-height: 1.5;
- }
- a{
-   text-decoration: none;
-   color: inherit;
- }
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  line-height: 1.5;
+  font-family: $font-kai;
+  color: #333;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+a {
+  text-decoration: none;
+  color: inherit;
 }
 </style>
