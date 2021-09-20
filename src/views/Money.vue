@@ -3,7 +3,7 @@
     <NumberPad />
     <Types :xxx="333" />
     <Notes />
-    <Tags />
+    <Tags :dataSource.sync="tags" />
     <!--支出收入-->
 
     <!--备注-->
@@ -20,6 +20,11 @@ import Tags from "@/components/Money/Tags.vue";
 export default {
   name: "Money",
   components: { Types, NumberPad, Notes, Tags },
+  data() {
+    return {
+      tags: ["衣", "食", "住", "行"],
+    };
+  },
 };
 </script>
 <style lang="scss">
