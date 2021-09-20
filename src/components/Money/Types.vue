@@ -12,42 +12,15 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Types extends Vue {
-  @Prop(Number) xxx: number | undefined; //Number是运行时类型,number|undefined是编译时类型
   type = "-"; //定义数据'-' 表支出，'+' 表示收入
 
   selectType(type: string) {
-    //给type声明好类型
     if (type !== "-" && type !== "+") {
-      //符号只能是-或+
       throw new Error("type is unknown");
     }
     this.type = type;
   }
-  mounted() {
-    if (this.xxx === undefined) {
-      console.log("xxx不存在哟");
-    } else {
-      console.log(this.xxx.toString());
-    }
-  }
 }
-// export default {
-//   name: "Types",
-//   data() {
-//     return {
-//       type: "-", //'-' 表支出，'+' 表示收入
-//     };
-//   },
-//   methods: {
-//     selectType(type) {
-//       if (type !== "-" && type !== "+") {
-//         //符号只能是-或+
-//         throw new Error("type is unknown");
-//       }
-//       this.type = type;
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>
