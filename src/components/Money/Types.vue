@@ -9,9 +9,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Types extends Vue {
+  @Prop(Number) xxx: number | undefined; //Number是运行时类型,number|undefined是编译时类型
   type = "-"; //定义数据'-' 表支出，'+' 表示收入
 
   selectType(type: string) {
@@ -21,6 +22,13 @@ export default class Types extends Vue {
       throw new Error("type is unknown");
     }
     this.type = type;
+  }
+  mounted() {
+    if (this.xxx === undefined) {
+      console.log("xxx不存在哟");
+    } else {
+      console.log(this.xxx.toString());
+    }
   }
 }
 // export default {

@@ -1,7 +1,7 @@
 <template>
   <Layout classPrefix="layout">
     <NumberPad />
-    <Types />
+    <Types :xxx="333" />
     <Notes />
     <Tags />
     <!--支出收入-->
