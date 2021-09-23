@@ -16,5 +16,6 @@ body {
   line-height: 1.5;
   font-family: $font-kai;
   color: #333;
+  background-color: #f5f5f5;
 }
 </style>
