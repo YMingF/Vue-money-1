@@ -4,7 +4,7 @@
     <!--支出收入-->
     <Types :value.sync="record.type" />
     <!--备注-->
-    <Notes
+    <FormItem
       @update:value="onUpdateNotes"
       fieldName="备注"
       placeholder="在这里输入备注"
@@ -19,7 +19,7 @@ import Vue from "vue";
 
 import NumberPad from "@/components/Money/NumberPad.vue";
 import Types from "@/components/Money/Types.vue";
-import Notes from "@/components/Money/Notes.vue";
+import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component, Watch } from "vue-property-decorator";
 import { recordListModel } from "@/models/recordListModel";
@@ -31,7 +31,7 @@ const recordList = recordListModel.fetch();
 const tagList = tagListModel.fetch();
 
 @Component({
-  components: { Types, NumberPad, Notes, Tags },
+  components: { Types, NumberPad, FormItem, Tags },
 })
 export default class Money extends Vue {
   tags = tagList;
