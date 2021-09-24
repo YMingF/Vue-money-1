@@ -4,7 +4,11 @@
     <!--支出收入-->
     <Types :value.sync="record.type" />
     <!--备注-->
-    <Notes @update:value="onUpdateNotes" />
+    <Notes
+      @update:value="onUpdateNotes"
+      fieldName="备注"
+      placeholder="在这里输入备注"
+    />
     <!--标签-->
     <Tags :dataSource.sync="tags" @update:value="onUpdateTags" />
   </Layout>
