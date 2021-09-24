@@ -4,11 +4,14 @@
     <!--支出收入-->
     <Types :value.sync="record.type" />
     <!--备注-->
-    <FormItem
-      @update:value="onUpdateNotes"
-      fieldName="备注"
-      placeholder="在这里输入备注"
-    />
+    <div class="notes">
+      <FormItem
+        @update:value="onUpdateNotes"
+        fieldName="备注"
+        placeholder="在这里输入备注"
+      />
+    </div>
+
     <!--标签-->
     <Tags :dataSource.sync="tags" @update:value="onUpdateTags" />
   </Layout>
@@ -67,5 +70,8 @@ export default class Money extends Vue {
 .layout-content {
   display: flex;
   flex-direction: column-reverse;
+}
+.notes {
+  padding: 12px 0;
 }
 </style>
