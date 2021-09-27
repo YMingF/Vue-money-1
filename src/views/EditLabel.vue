@@ -9,13 +9,13 @@
     <div class="form-wrapper">
       <FormItem
         :value="tag.name"
-        @update:value="updateTag"
+        @update:value="update"
         fieldName="标签名"
         placeholder="请输入标签名"
       />
     </div>
     <div class="button-wrapper">
-      <Button>删除标签 </Button>
+      <Button @click="remove">删除标签 </Button>
     </div>
   </Layout>
 </template>
@@ -42,9 +42,14 @@ export default class EditLabel extends Vue {
       this.$router.replace("/404"); //$router是路由器，可以进行转发等操作
     }
   }
-  updateTag(name: string) {
+  update(name: string) {
     if (this.tag) {
       tagListModel.update(this.tag.id, name);
+    }
+  }
+  remove() {
+    if (this.tag) {
+      tagListModel.remove(this.tag.id);
     }
   }
 }

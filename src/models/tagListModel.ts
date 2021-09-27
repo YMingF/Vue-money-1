@@ -10,6 +10,7 @@ type TagListModel={
   fetch:()=>Tag[]  //设置好函数的返回值是string[]字符串数组类型
   create:(name:string)=>'success'|'duplicated' //表示返回值要么是success要么duplicated，只能是这两种值,
   update:(id:string,name:string)=>'success'|'not found'  |'duplicated'
+  remove:(id:string)=>boolean
   save:()=>void //void表示没返回值
 }
 const tagListModel:TagListModel = {
@@ -36,13 +37,25 @@ const tagListModel:TagListModel = {
           return 'duplicated'
         }else{
           const tag=this.data.filter(item=>item.id===id)[0]
-          tag.name=name 
+          tag.name=name  
           this.save()
           return 'success'
         }
     }else{
       return 'not found'
     }
+  },
+  remove(id:string){
+    let index=-1
+    for(let i=0;i<this.data.length;i++){
+      if(this.data[i].id===id){
+        index=i
+        break
+      }
+    }
+    this.data.splice(index,1)
+    this.save()
+    return true
   },
   save() {
     window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
