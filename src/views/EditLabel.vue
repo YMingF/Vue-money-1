@@ -7,7 +7,11 @@
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-      <FormItem fieldName="标签名" placeholder="请输入标签名" />
+      <FormItem
+        :value="tag.name"
+        fieldName="标签名"
+        placeholder="请输入标签名"
+      />
     </div>
     <div class="button-wrapper">
       <Button>删除标签 </Button>
@@ -25,13 +29,14 @@ import { Component } from "vue-property-decorator";
   components: { FormItem, Button },
 })
 export default class EditLabel extends Vue {
+  tag?: { id: string; name: string } = undefined; //声明好类型, ？表示这东西可以为空
   created() {
     const id = this.$route.params.id; //this.$route.params用于得到所有参数
     tagListModel.fetch();
     const tags = tagListModel.data;
     const tag = tags.filter((t) => t.id === id)[0];
     if (tag) {
-      console.log(tag);
+      this.tag = tag; //将找到的tag赋值给前面定义的tag
     } else {
       this.$router.replace("/404"); //$router是路由器，可以进行转发等操作
     }
