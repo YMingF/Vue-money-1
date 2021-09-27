@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left" />
+      <Icon class="leftIcon" name="left" @click="goBack" />
       <span class="title">编辑标签</span>
       <!--下面东西写到这是方便布局来实现标题的居中显示-->
       <span class="rightIcon"></span>
@@ -51,6 +51,9 @@ export default class EditLabel extends Vue {
     if (this.tag) {
       tagListModel.remove(this.tag.id);
     }
+  }
+  goBack() {
+    this.$router.back();
   }
 }
 </script>
