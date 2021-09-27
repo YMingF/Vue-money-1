@@ -9,6 +9,7 @@
     <div class="form-wrapper">
       <FormItem
         :value="tag.name"
+        @update:value="updateTag"
         fieldName="标签名"
         placeholder="请输入标签名"
       />
@@ -39,6 +40,11 @@ export default class EditLabel extends Vue {
       this.tag = tag; //将找到的tag赋值给前面定义的tag
     } else {
       this.$router.replace("/404"); //$router是路由器，可以进行转发等操作
+    }
+  }
+  updateTag(name: string) {
+    if (this.tag) {
+      tagListModel.update(this.tag.id, name);
     }
   }
 }
