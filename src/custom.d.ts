@@ -20,5 +20,8 @@ type TagListModel={
   }
 interface Window{
   tagList:Tag[];
-  createTag:(name:string)=>void
+  createTag:(name:string)=>void;
+  removeTag:(id:string)=>boolean;
+  updateTag:TagListModel['update'] //这表示其类型和TagListModel['update']一样
+  findTag:(id:string)=>Tag|undefined;
 }

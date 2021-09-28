@@ -23,33 +23,28 @@
 <script lang="ts">
 import FormItem from "@/components/Money/FormItem.vue";
 import Button from "@/components/Button.vue";
-import { tagListModel } from "@/models/tagListModel";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component({
   components: { FormItem, Button },
 })
 export default class EditLabel extends Vue {
-  tag?: { id: string; name: string } = undefined; //声明好类型, ？表示这东西可以为空
+  tag?: Tag = undefined; //声明好类型, ？表示这东西可以为空
   created() {
-    const id = this.$route.params.id; //this.$route.params用于得到所有参数
-    tagListModel.fetch();
-    const tags = tagListModel.data;
-    const tag = tags.filter((t) => t.id === id)[0];
-    if (tag) {
-      this.tag = tag; //将找到的tag赋值给前面定义的tag
-    } else {
+    //this.$route.params用于得到所有参数
+    this.tag = window.findTag(this.$route.params.id); //将找到的tag赋值给前面定义的tag
+    if (!this.tag) {
       this.$router.replace("/404"); //$router是路由器，可以进行转发等操作
     }
   }
   update(name: string) {
     if (this.tag) {
-      tagListModel.update(this.tag.id, name);
+      window.updateTag(this.tag.id, name);
     }
   }
   remove() {
     if (this.tag) {
-      if (tagListModel.remove(this.tag.id)) {
+      if (window.removeTag(this.tag.id)) {
         this.$router.back();
       } else {
         window.alert("删除失败");
