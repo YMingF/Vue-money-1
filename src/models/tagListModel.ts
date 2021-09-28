@@ -1,19 +1,7 @@
 
-import { RecordItem } from "@/custom";
 import createId from "@/lib/createId";
 const localStorageKeyName = "tagList";
-type Tag={
-  id:string;
-  name:string
-}
-type TagListModel={
-  data:Tag[]
-  fetch:()=>Tag[]  //设置好函数的返回值是string[]字符串数组类型
-  create:(name:string)=>'success'|'duplicated' //表示返回值要么是success要么duplicated，只能是这两种值,
-  update:(id:string,name:string)=>'success'|'not found'  |'duplicated'
-  remove:(id:string)=>boolean
-  save:()=>void //void表示没返回值
-}
+
 const tagListModel:TagListModel = {
   data:[],
   fetch() {
