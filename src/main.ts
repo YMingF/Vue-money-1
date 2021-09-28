@@ -13,7 +13,14 @@ Vue.component('Layout',Layout)
 Vue.component('Icon',Icon)
 
 window.tagList = tagListModel.fetch(); //这里的tagList需要到custom.d.ts里申明类型，不然报错
-
+window.createTag=(name:string)=>{
+  const message = tagListModel.create(name);
+  if (message === "duplicated") {
+    window.alert("标签名重复了");
+  } else if (message === "success") {
+    window.alert("添加成功");
+  }
+}
 new Vue({
   router:router,
   store,
