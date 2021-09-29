@@ -19,11 +19,6 @@ type TagListModel={
     save:()=>void //void表示没返回值
   }
 interface Window{
-  tagList:Tag[];
-  createTag:(name:string)=>void;
-  removeTag:(id:string)=>boolean;
-  updateTag:TagListModel['update'] //这表示其类型和TagListModel['update']一样
-  findTag:(id:string)=>Tag|undefined;
-  recordList:RecordItem[]
-  createRecord:(record:RecordItem)=>void
+  //删掉了类型定义是因为它会自动推出来
+  
 }
