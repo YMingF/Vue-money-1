@@ -24,4 +24,6 @@ interface Window{
   removeTag:(id:string)=>boolean;
   updateTag:TagListModel['update'] //这表示其类型和TagListModel['update']一样
   findTag:(id:string)=>Tag|undefined;
+  recordList:RecordItem[]
+  createRecord:(record:RecordItem)=>void
 }
