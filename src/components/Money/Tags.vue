@@ -4,44 +4,36 @@
       <button @click="create">新增标签</button>
     </div>
     <ul class="current">
-      <li
-        v-for="tag in dataSource"
-        :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
-        :key="tag.id"
-        @click="toggle(tag)"
-      >
-        {{ tag.name }}
-      </li>
+      <li v-for="tag in tagList" :class="{ selected: selectedTags.indexOf(tag) >= 0 }" :key="tag.id" @click="toggle(tag)">{{ tag.name }}</li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import store from '@/store/index2'
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 @Component
 export default class Tags extends Vue {
-  @Prop(Array) readonly dataSource: string[] | undefined; //string[]是字符串数组
-
-  selectedTags: string[] = [];
+  tagList = store.fetchTags() //直接获取
+  selectedTags: string[] = []
 
   toggle(tag: string) {
-    const index = this.selectedTags.indexOf(tag);
+    const index = this.selectedTags.indexOf(tag)
     if (index >= 0) {
-      this.selectedTags.splice(index, 1);
+      this.selectedTags.splice(index, 1)
     } else {
-      this.selectedTags.push(tag);
+      this.selectedTags.push(tag)
     }
-    this.$emit("update:value", this.selectedTags); //触发事件,将被选中标签的值传出去
+    this.$emit('update:value', this.selectedTags) //触发事件,将被选中标签的值传出去
   }
 
   create() {
-    const name = window.prompt("请输入标签名:");
-    if (name === "") {
-      window.alert("标签名不能为空");
-    } else if (this.dataSource) {
-      this.$emit("update:dataSource", [...this.dataSource, name]); //当你更新dataSource的时候,将name添加到数组里
+    const name = window.prompt('请输入标签名:')
+    if (!name) {
+      return window.alert('标签名不能为空') //先执行alert，然后return 退出函数，返回的是undefined
     }
+    store.createTag(name) //因为都放到全局了，所以不用通知外面了去进行更新操作，直接调用
   }
 }
 </script>
