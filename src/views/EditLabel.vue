@@ -4,56 +4,50 @@
       <Icon class="leftIcon" name="left" @click="goBack" />
       <span class="title">编辑标签</span>
       <!--下面东西写到这是方便布局来实现标题的居中显示-->
-      <span class="rightIcon"></span>
+      <span class="rightIcon" />
     </div>
     <div class="form-wrapper">
-      <FormItem
-        :value="tag.name"
-        @update:value="update"
-        fieldName="标签名"
-        placeholder="请输入标签名"
-      />
+      <FormItem :value="tag.name" @update:value="update" fieldName="标签名" placeholder="请输入标签名" />
     </div>
     <div class="button-wrapper">
-      <Button @click="remove">删除标签 </Button>
+      <Button @click="remove">删除标签</Button>
     </div>
   </Layout>
 </template>
 
 <script lang="ts">
-import FormItem from "@/components/Money/FormItem.vue";
-import Button from "@/components/Button.vue";
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import store from "@/store/index2";
+import FormItem from '@/components/Money/FormItem.vue'
+import Button from '@/components/Button.vue'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 @Component({
-  components: { FormItem, Button },
+  components: { FormItem, Button }
 })
 export default class EditLabel extends Vue {
-  tag?: Tag = undefined; //声明好类型, ？表示这东西可以为空
+  tag?: Tag = undefined //声明好类型, ？表示这东西可以为空
   created() {
     //this.$route.params用于得到所有参数
-    this.tag = store.findTag(this.$route.params.id); //将找到的tag赋值给前面定义的tag
+    // this.tag ={} store.findTag(this.$route.params.id) //将找到的tag赋值给前面定义的tag
     if (!this.tag) {
-      this.$router.replace("/404"); //$router是路由器，可以进行转发等操作
+      this.$router.replace('/404') //$router是路由器，可以进行转发等操作
     }
   }
   update(name: string) {
     if (this.tag) {
-      store.updateTag(this.tag.id, name);
+      // store.updateTag(this.tag.id, name)
     }
   }
   remove() {
     if (this.tag) {
-      if (store.removeTag(this.tag.id)) {
-        this.$router.back();
-      } else {
-        window.alert("删除失败");
-      }
+      // if (store.removeTag(this.tag.id)) {
+      //   this.$router.back()
+      // } else {
+      //   window.alert('删除失败')
+      // }
     }
   }
   goBack() {
-    this.$router.back();
+    this.$router.back()
   }
 }
 </script>

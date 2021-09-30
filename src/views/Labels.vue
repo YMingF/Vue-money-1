@@ -1,36 +1,30 @@
 <template>
   <Layout>
     <div class="tags">
-      <router-link
-        class="tag"
-        v-for="tag in tags"
-        :key="tag.id"
-        :to="`/labels/edit/${tag.id}`"
-      >
+      <router-link class="tag" v-for="tag in tags" :key="tag.id" :to="`/labels/edit/${tag.id}`">
         <span>{{ tag.name }}</span>
         <Icon name="right" />
       </router-link>
     </div>
     <div class="createTag-wrapper">
-      <Button class="createTag" @click.native="createTag">新建标签 </Button>
+      <Button class="createTag" @click.native="createTag">新建标签</Button>
     </div>
   </Layout>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Button from "@/components/Button.vue";
-import { Component } from "vue-property-decorator";
-import store from "@/store/index2";
+import Vue from 'vue'
+import Button from '@/components/Button.vue'
+import { Component } from 'vue-property-decorator'
 @Component({
-  components: { Button },
+  components: { Button }
 })
 export default class Labels extends Vue {
-  tags = store.tagList;
+  // tags = store.tagList
   createTag() {
-    const name = window.prompt("请输入标签名：");
+    const name = window.prompt('请输入标签名：')
     if (name) {
-      store.createTag(name);
+      // store.createTag(name)
     }
   }
 }

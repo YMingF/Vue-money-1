@@ -10,14 +10,20 @@
 </template>
 
 <script lang="ts">
-import store from '@/store/index2'
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-@Component
+@Component({
+  computed: {
+    tagList() {
+      return this.$store.state.tagList
+    }
+  }
+})
 export default class Tags extends Vue {
-  tagList = store.fetchTags() //直接获取
   selectedTags: string[] = []
-
+  created() {
+    this.$store.commit('fetchTags')
+  }
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag)
     if (index >= 0) {
@@ -33,7 +39,7 @@ export default class Tags extends Vue {
     if (!name) {
       return window.alert('标签名不能为空') //先执行alert，然后return 退出函数，返回的是undefined
     }
-    store.createTag(name) //因为都放到全局了，所以不用通知外面了去进行更新操作，直接调用
+    this.$store.commit('createTag', name) //因为都放到全局了，所以不用通知外面了去进行更新操作，直接调用
   }
 }
 </script>
