@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button @click="create">新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
       <li v-for="tag in tagList" :class="{ selected: selectedTags.indexOf(tag) >= 0 }" :key="tag.id" @click="toggle(tag)">{{ tag.name }}</li>
@@ -10,7 +10,9 @@
 </template>
 
 <script lang="ts">
+import TagHelper from '@/mixins/TagHelper'
 import Vue from 'vue'
+import { mixins } from 'vue-class-component'
 import { Component, Prop } from 'vue-property-decorator'
 @Component({
   computed: {
@@ -19,7 +21,7 @@ import { Component, Prop } from 'vue-property-decorator'
     }
   }
 })
-export default class Tags extends Vue {
+export default class Tags extends mixins(TagHelper) {
   selectedTags: string[] = []
   created() {
     this.$store.commit('fetchTags')
@@ -32,14 +34,6 @@ export default class Tags extends Vue {
       this.selectedTags.push(tag)
     }
     this.$emit('update:value', this.selectedTags) //触发事件,将被选中标签的值传出去
-  }
-
-  create() {
-    const name = window.prompt('请输入标签名:')
-    if (!name) {
-      return window.alert('标签名不能为空') //先执行alert，然后return 退出函数，返回的是undefined
-    }
-    this.$store.commit('createTag', name) //因为都放到全局了，所以不用通知外面了去进行更新操作，直接调用
   }
 }
 </script>
