@@ -7,7 +7,7 @@
       <span class="rightIcon" />
     </div>
     <div class="form-wrapper">
-      <FormItem :value="tag.name" @update:value="update" fieldName="标签名" placeholder="请输入标签名" />
+      <FormItem :value="currentTag.name" @update:value="update" fieldName="标签名" placeholder="请输入标签名" />
     </div>
     <div class="button-wrapper">
       <Button @click="remove">删除标签</Button>
@@ -24,28 +24,25 @@ import { Component } from 'vue-property-decorator'
   components: { FormItem, Button }
 })
 export default class EditLabel extends Vue {
-  get tag() {
+  get currentTag() {
     return this.$store.state.currentTag
   }
   created() {
     const id = this.$route.params.id
+    this.$store.commit('fetchTags') //加上，避免刷新时报错
     this.$store.commit('setCurrentTag', id)
-    if (!this.tag) {
+    if (!this.currentTag) {
       this.$router.replace('/404') //$router是路由器，可以进行转发等操作
     }
   }
   update(name: string) {
-    if (this.tag) {
-      // store.updateTag(this.tag.id, name)
+    if (this.currentTag) {
+      this.$store.commit('updateTag', { id: this.currentTag.id, name: name })
     }
   }
   remove() {
-    if (this.tag) {
-      // if (store.removeTag(this.tag.id)) {
-      //   this.$router.back()
-      // } else {
-      //   window.alert('删除失败')
-      // }
+    if (this.currentTag) {
+      this.$store.commit('removeTag', this.currentTag.id)
     }
   }
   goBack() {
