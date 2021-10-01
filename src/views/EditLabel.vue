@@ -24,10 +24,12 @@ import { Component } from 'vue-property-decorator'
   components: { FormItem, Button }
 })
 export default class EditLabel extends Vue {
-  tag?: Tag = undefined //声明好类型, ？表示这东西可以为空
+  get tag() {
+    return this.$store.state.currentTag
+  }
   created() {
-    //this.$route.params用于得到所有参数
-    // this.tag ={} store.findTag(this.$route.params.id) //将找到的tag赋值给前面定义的tag
+    const id = this.$route.params.id
+    this.$store.commit('setCurrentTag', id)
     if (!this.tag) {
       this.$router.replace('/404') //$router是路由器，可以进行转发等操作
     }
