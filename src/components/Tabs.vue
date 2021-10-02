@@ -1,30 +1,32 @@
 <template>
-  <div>
-    <ul class="types">
-      <li :class="{selected:value === '-',[classPrefix+'-item']:classPrefix} " @click="selectType('-')">支出</li>
-      <li :class="{selected:value === '+',[classPrefix+'-item']:classPrefix}" @click="selectType('+')">收入</li>
-    </ul>
-  </div>
+  <ul class="tabs">
+    <li v-for="item in dataSource" :key="item.vaule" :class="liClass(item)" @click="select(item)">{{item.text}}</li>
+  </ul>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
+type DataSourceItem = { text: string; value: string }
 @Component
-export default class Types extends Vue {
+export default class Tabs extends Vue {
   @Prop(String) readonly value!: string
   @Prop(String) classPrefix?: string
-  selectType(type: string) {
-    if (type !== '-' && type !== '+') {
-      throw new Error('type is unknown')
+  @Prop({ required: true, type: Array }) dataSource!: DataSourceItem[]
+  liClass(item: DataSourceItem) {
+    return {
+      selected: item.value === this.value,
+      [this.classPrefix + '-tabs-item']: this.classPrefix
     }
-    this.$emit('update:value', type)
+  }
+  select(item: DataSourceItem) {
+    this.$emit('update:value', item.value)
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.types {
+<style lang='scss' scoped>
+.tabs {
   background: #c4c4c4;
   display: flex;
   text-align: center;
