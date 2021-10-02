@@ -2,22 +2,57 @@
   <Layout>
     <Tabs classPrefix="type" :dataSource="recordTypeList" :value.sync="type" />
     <Tabs classPrefix="interval" :dataSource="intervalList" :value.sync="interval" />
-    <div>
-      <ol>
-        <li v-for="(group,index) in result" :key="index">
-          <h3>{{group.title}}</h3>
-          <ol>
-            <li v-for="item in group.items" :key="item.id">
-              {{item.amount}}
-              {{item.createdAt}}
-            </li>
-          </ol>
-        </li>
-      </ol>
-    </div>
+    <ol>
+      <li v-for="(group,index) in result" :key="index">
+        <h3 class="title">{{group.title}}</h3>
+        <ol>
+          <li v-for="item in group.items" :key="item.id" class="record">
+            <span>{{tagString(item.tags)}}</span>
+            <span class="notes">{{item.notes}}</span>
+            <span>￥{{item.amount}}</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
   </Layout>
 </template>
 
+
+<style lang='scss' scoped>
+%item {
+  padding: 8px 16px;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  @extend %item;
+}
+.record {
+  background-color: white;
+  @extend %item;
+}
+.notes {
+  margin-right: auto; //让备注能够靠左显示，而不会居中
+  margin-left: 16px;
+  color: #999;
+}
+::v-deep {
+  .type-tabs-item {
+    background-color: white;
+    &.selected {
+      background-color: #c4c4c4;
+      &::after {
+        display: none;
+      }
+    }
+  }
+  .interval-tabs-item {
+    height: 48px;
+  }
+}
+</style>
 
 <script lang='ts'>
 import Vue from 'vue'
@@ -30,6 +65,9 @@ import { Component } from 'vue-property-decorator'
   components: { Tabs }
 })
 export default class Statistics extends Vue {
+  tagString(tags: Tag[]) {
+    return tags.length === 0 ? '无' : tags.join(',')
+  }
   get recordList() {
     return (this.$store.state as RootState).recordList
   }
@@ -56,19 +94,3 @@ export default class Statistics extends Vue {
 }
 </script>
 
-<style lang='scss' scoped>
-::v-deep {
-  .type-tabs-item {
-    background-color: white;
-    &.selected {
-      background-color: #c4c4c4;
-      &::after {
-        display: none;
-      }
-    }
-  }
-  .interval-tabs-item {
-    height: 48px;
-  }
-}
-</style>
