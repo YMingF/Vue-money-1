@@ -3,7 +3,7 @@
     <Tabs classPrefix="type" :dataSource="recordTypeList" :value.sync="type" />
     <Tabs classPrefix="interval" :dataSource="intervalList" :value.sync="interval" />
     <ol>
-      <li v-for="group in result" :key="group.title">
+      <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">{{beautify(group.title)}}</h3>
         <ol>
           <li v-for="item in group.items" :key="item.id" class="record">
@@ -62,6 +62,7 @@ import intervalList from '@/constants/intervalList'
 import recordTypeList from '@/constants/recordTypeList'
 import { Component } from 'vue-property-decorator'
 import dayjs from 'dayjs'
+import clone from '@/lib/clone'
 @Component({
   components: { Tabs }
 })
@@ -80,26 +81,34 @@ export default class Statistics extends Vue {
       return '前天'
     } else if (day.isSame(now, 'year')) {
       //如果是同一年，就省掉年份的显示
-      return day.format('M月/D日')
+      return day.format('M月-D日')
     } else {
-      return day.format('YYYY年/M月/D日')
+      return day.format('YYYY年-M月-D日')
     }
   }
   get recordList() {
     return (this.$store.state as RootState).recordList
   }
-  get result() {
+  get groupedList() {
     const { recordList } = this //等同于recordList=this.recordList
-    type HashTabelValue = { title: string; items: RecordItem[] }
-    const hashTabel: { [key: string]: HashTabelValue } = {}
-    for (let i = 0; i < recordList.length; i++) {
-      const [date, time] = recordList[i].createdAt!.split('T')
-      hashTabel[date] = hashTabel[date] || { title: date, items: [] } //当前这时间对应有没有数据，若没有赋值一个初始数据，方便后面的新增
-      hashTabel[date].items.push(recordList[i])
+    if (recordList.length === 0) {
+      return []
     }
-    console.log('hashTabel的值来了')
-    console.log(hashTabel)
-    return hashTabel
+    const newList = clone(recordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf())
+
+    const result = [{ title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]] }]
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i]
+      const last = result[result.length - 1]
+
+      if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+        last.items.push(current)
+      } else {
+        result.push({ title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current] })
+      }
+    }
+    console.log(result)
+    return result
   }
   beforeCreate() {
     this.$store.commit('fetchRecords')

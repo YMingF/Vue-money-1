@@ -6,7 +6,7 @@ type RootState={
 
 type RecordItem = {
     //对象的类型声明
-    tags: string[];
+    tags: Tag[];
     notes: string;
     type: string;
     amount: number; //数据类型
