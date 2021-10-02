@@ -3,8 +3,8 @@
     <Tabs classPrefix="type" :dataSource="recordTypeList" :value.sync="type" />
     <Tabs classPrefix="interval" :dataSource="intervalList" :value.sync="interval" />
     <ol>
-      <li v-for="(group,index) in result" :key="index">
-        <h3 class="title">{{group.title}}</h3>
+      <li v-for="group in result" :key="group.title">
+        <h3 class="title">{{beautify(group.title)}}</h3>
         <ol>
           <li v-for="item in group.items" :key="item.id" class="record">
             <span>{{tagString(item.tags)}}</span>
@@ -61,12 +61,29 @@ import Tabs from '@/components/Tabs.vue'
 import intervalList from '@/constants/intervalList'
 import recordTypeList from '@/constants/recordTypeList'
 import { Component } from 'vue-property-decorator'
+import dayjs from 'dayjs'
 @Component({
   components: { Tabs }
 })
 export default class Statistics extends Vue {
   tagString(tags: Tag[]) {
     return tags.length === 0 ? '无' : tags.join(',')
+  }
+  beautify(string: string) {
+    const day = dayjs(string)
+    const now = dayjs() //获取到当前时间
+    if (day.isSame(now, 'day')) {
+      return '今天'
+    } else if (day.isSame(now.subtract(1, 'day'), 'day')) {
+      return '昨天'
+    } else if (day.isSame(now.subtract(2, 'day'), 'day')) {
+      return '前天'
+    } else if (day.isSame(now, 'year')) {
+      //如果是同一年，就省掉年份的显示
+      return day.format('M月/D日')
+    } else {
+      return day.format('YYYY年/M月/D日')
+    }
   }
   get recordList() {
     return (this.$store.state as RootState).recordList
