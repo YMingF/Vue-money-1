@@ -1,10 +1,12 @@
 <template>
   <Layout>
     <Tabs classPrefix="type" :dataSource="recordTypeList" :value.sync="type" />
-    <Tabs classPrefix="interval" :dataSource="intervalList" :value.sync="interval" />
     <ol>
       <li v-for="(group,index) in groupedList" :key="index">
-        <h3 class="title">{{beautify(group.title)}}</h3>
+        <h3 class="title">
+          {{beautify(group.title)}}
+          <span>￥{{group.total}}</span>
+        </h3>
         <ol>
           <li v-for="item in group.items" :key="item.id" class="record">
             <span>{{tagString(item.tags)}}</span>
@@ -40,9 +42,11 @@
 }
 ::v-deep {
   .type-tabs-item {
-    background-color: white;
+    background-color: #c4c4c4;
+
     &.selected {
-      background-color: #c4c4c4;
+      background-color: white;
+
       &::after {
         display: none;
       }
@@ -58,7 +62,6 @@
 import Vue from 'vue'
 
 import Tabs from '@/components/Tabs.vue'
-import intervalList from '@/constants/intervalList'
 import recordTypeList from '@/constants/recordTypeList'
 import { Component } from 'vue-property-decorator'
 import dayjs from 'dayjs'
@@ -67,6 +70,8 @@ import clone from '@/lib/clone'
   components: { Tabs }
 })
 export default class Statistics extends Vue {
+  type = '-'
+  recordTypeList = recordTypeList
   tagString(tags: Tag[]) {
     return tags.length === 0 ? '无' : tags.join(',')
   }
@@ -94,9 +99,13 @@ export default class Statistics extends Vue {
     if (recordList.length === 0) {
       return []
     }
-    const newList = clone(recordList).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf())
+    const newList = clone(recordList)
+      .filter(r => r.type === this.type)
+      .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf())
 
-    const result = [{ title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]] }]
+    type Result = { title: string; total?: number; items: RecordItem[] }[]
+
+    const result: Result = [{ title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]] }]
     for (let i = 1; i < newList.length; i++) {
       const current = newList[i]
       const last = result[result.length - 1]
@@ -107,16 +116,15 @@ export default class Statistics extends Vue {
         result.push({ title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current] })
       }
     }
-    console.log(result)
+    //取出列表里的每一项，然后将统计到的总金额设置到total属性
+    result.map(group => {
+      group.total = group.items.reduce((sum, item) => sum + item.amount, 0)
+    })
     return result
   }
   beforeCreate() {
     this.$store.commit('fetchRecords')
   }
-  type = '-'
-  interval = 'day'
-  intervalList = intervalList
-  recordTypeList = recordTypeList
 }
 </script>
 
