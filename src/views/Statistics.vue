@@ -73,7 +73,7 @@ export default class Statistics extends Vue {
   type = '-'
   recordTypeList = recordTypeList
   tagString(tags: Tag[]) {
-    return tags.length === 0 ? '无' : tags.join(',')
+    return tags.length === 0 ? '无' : tags.map(t => t.name).join('，')
   }
   beautify(string: string) {
     const day = dayjs(string)
@@ -96,9 +96,7 @@ export default class Statistics extends Vue {
   }
   get groupedList() {
     const { recordList } = this //等同于recordList=this.recordList
-    if (recordList.length === 0) {
-      return []
-    }
+
     type Result = { title: string; total?: number; items: RecordItem[] }[]
 
     const newList = clone(recordList)

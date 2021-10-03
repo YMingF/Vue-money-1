@@ -1,5 +1,6 @@
 type RootState={
   recordList:  RecordItem[],
+  createRecordError:Error |null, //用来等下存储创建数据时的错误
   tagList:  Tag[],
   currentTag?:Tag
 }

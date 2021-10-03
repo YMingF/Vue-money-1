@@ -9,7 +9,7 @@
     </div>
 
     <!--标签-->
-    <Tags />
+    <Tags @update:value="record.tags=$event" />
   </Layout>
 </template>
 
@@ -51,6 +51,9 @@ export default class Money extends Vue {
   }
   saveRecord() {
     this.$store.commit('createRecord', this.record)
+    if (this.$store.state.createRecordError === null) {
+      window.alert('已保存')
+    }
   }
 }
 </script>

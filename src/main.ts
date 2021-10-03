@@ -17,3 +17,10 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+//让手机打开页面时，能够滚到最下面，显示出完整内容。
+window.onload=function(){
+  setTimeout(function(){
+    window.scrollTo(0,1000)
+  },0)
+}
