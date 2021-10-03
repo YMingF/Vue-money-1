@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Tabs classPrefix="type" :dataSource="recordTypeList" :value.sync="type" />
-    <ol>
+    <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">
           {{beautify(group.title)}}
@@ -16,11 +16,16 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">目前暂无相关记录</div>
   </Layout>
 </template>
 
 
 <style lang='scss' scoped>
+.noResult {
+  padding: 16px;
+  text-align: center;
+}
 %item {
   padding: 8px 16px;
   line-height: 24px;
