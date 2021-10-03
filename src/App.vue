@@ -6,8 +6,8 @@
 
 <style lang="scss">
 //因为要影响全局,所以样式不加scoped
-@import "~@/assets/style/reset.scss";
-@import "~@/assets/style/helper.scss";
+@import '~@/assets/style/reset.scss';
+@import '~@/assets/style/helper.scss';
 
 body {
   -webkit-font-smoothing: antialiased;

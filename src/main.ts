@@ -11,7 +11,6 @@ Vue.component('Nav',Nav)
 Vue.component('Layout',Layout)
 Vue.component('Icon',Icon)
 
-
 new Vue({
   router:router,
   store,
@@ -26,7 +25,7 @@ window.onload=function(){
 }
 if(document.documentElement.clientWidth>500){
   const img=document.createElement('img')
-  img.src='/qrcode.png';
+  img.src=require('../public/qrcode.png')
   img.style.position='fixed';
   img.style.left='50%';
   img.style.top='50%';
