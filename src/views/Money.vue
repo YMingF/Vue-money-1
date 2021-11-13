@@ -1,58 +1,67 @@
 <template>
   <Layout classPrefix="layout">
-    <NumberPad @update:value="onUpdateAmount" @submit="saveRecord" />
+    <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
     <!--支出收入-->
-    <Tabs :dataSource="recordTypeList" :value.sync="record.type" />
+    <Tabs :dataSource="recordTypeList" :value.sync="record.type"/>
+    <!--日期-->
+    <div class="createdAt">
+      <FormItem :value.sync="record.createdAt" fieldName="日期" type="date" placeholder="在这里输入日期"/>
+    </div>
     <!--备注-->
     <div class="notes">
-      <FormItem :value.sync="record.notes" fieldName="备注" placeholder="在这里输入备注" />
+      <FormItem :value.sync="record.notes" fieldName="备注" placeholder="在这里输入备注"/>
     </div>
 
     <!--标签-->
-    <Tags @update:value="record.tags=$event" />
+    <Tags @update:value="record.tags=$event"/>
   </Layout>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
-import NumberPad from '@/components/Money/NumberPad.vue'
-import FormItem from '@/components/Money/FormItem.vue'
-import Tags from '@/components/Money/Tags.vue'
+import NumberPad from '@/components/Money/NumberPad.vue';
+import FormItem from '@/components/Money/FormItem.vue';
+import Tags from '@/components/Money/Tags.vue';
 
-import Tabs from '@/components/Tabs.vue'
-import { Component } from 'vue-property-decorator'
-import recordTypeList from '@/constants/recordTypeList'
+import Tabs from '@/components/Tabs.vue';
+import {Component} from 'vue-property-decorator';
+import recordTypeList from '@/constants/recordTypeList';
+
 @Component({
-  components: { NumberPad, FormItem, Tags, Tabs }
+  components: {NumberPad, FormItem, Tags, Tabs}
 })
 export default class Money extends Vue {
   get recordList() {
-    return this.$store.state.recordList
+    return this.$store.state.recordList;
   }
-  recordTypeList = recordTypeList
+
+  recordTypeList = recordTypeList;
   record: RecordItem = {
     tags: [],
     notes: '',
     type: '+',
-    amount: 0
-  }
+    amount: 0,
+    createdAt: new Date().toISOString()
+  };
+
   created() {
     //一开始调用下fetch拿好数据
-    this.$store.commit('fetchRecords')
+    this.$store.commit('fetchRecords');
   }
 
   onUpdateAmount(value: string) {
-    this.record.amount = parseFloat(value)
+    this.record.amount = parseFloat(value);
   }
+
   saveRecord() {
     if (!this.record.tags || this.record.tags.length === 0) {
-      return window.alert('请至少选择一个标签')
+      return window.alert('请至少选择一个标签');
     }
-    this.$store.commit('createRecord', this.record)
+    this.$store.commit('createRecord', this.record);
     if (this.$store.state.createRecordError === null) {
-      window.alert('已保存')
-      this.record.notes = ''
+      window.alert('已保存');
+      this.record.notes = '';
     }
   }
 }
@@ -62,6 +71,7 @@ export default class Money extends Vue {
   display: flex;
   flex-direction: column-reverse;
 }
+
 .notes {
   padding: 12px 0;
 }
