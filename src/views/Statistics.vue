@@ -128,15 +128,17 @@ export default class Statistics extends Vue {
   }
 
   get dataArray() {
+    console.log('groupedList的值是');
+    console.log(this.groupedList);
     const today = new Date();
     const array = [];
     for (let i = 0; i <= 29; i++) {
       const dateString = dayjs(today)
           .subtract(i, 'day')
           .format('YYYY-MM-DD');
-      const found = _.find(this.recordList, {createdAt: dateString});
+      const found = _.find(this.groupedList, {title: dateString});
       array.push({
-        date: dateString, value: found ? found.amount : 0
+        date: dateString, value: found ? found.total : 0
       });
     }
     array.sort((a, b) => {
@@ -199,6 +201,7 @@ export default class Statistics extends Vue {
   }
 
   get groupedList() {
+
     const {recordList} = this; //等同于recordList=this.recordList
 
     type Result = { title: string; total?: number; items: RecordItem[] }[]
@@ -219,7 +222,7 @@ export default class Statistics extends Vue {
       if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
         last.items.push(current);
       } else {
-        result.push({title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
+        result.push({title: dayjs(current.createdAt).format('YYYY-M-DD'), items: [current]});
       }
     }
     //取出列表里的每一项，然后将统计到的总金额设置到total属性
