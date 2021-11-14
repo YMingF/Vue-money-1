@@ -1,7 +1,9 @@
 <template>
   <Layout>
     <Tabs classPrefix="type" :dataSource="recordTypeList" :value.sync="type"/>
-    <Chart :options="option"/>
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart class="chart" :options="option"/>
+    </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">
@@ -70,7 +72,10 @@
 }
 
 .chart {
-  height: 400px;
+  width: 430%; /*因为每屏要展示7天数据,一共是30天,所以需要将近5个屏来展示所有内容*/
+  &-wrapper {
+    overflow: auto;
+  }
 }
 </style>
 
@@ -95,6 +100,10 @@ export default class Statistics extends Vue {
     return tags.length === 0 ? '无' : tags.map(t => t.name).join('，');
   }
 
+  mounted() {
+    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+  }
+
   beautify(string: string) {
     const day = dayjs(string);
     const now = dayjs(); //获取到当前时间
@@ -115,6 +124,10 @@ export default class Statistics extends Vue {
   get option() {
     return {
       tooltip: {show: true},
+      grid: {
+        left: 0,
+        right: 0,
+      },
       xAxis: {
         type: 'category',
         data: [
@@ -126,7 +139,10 @@ export default class Statistics extends Vue {
         ]
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLabel: {
+          show: false
+        }
       },
       series: [
         {
