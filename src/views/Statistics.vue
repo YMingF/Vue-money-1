@@ -92,6 +92,7 @@ import {Component} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 import Chart from '@/components/Chart.vue';
+import _ from 'lodash';
 
 @Component({
   components: {Tabs, Chart}
@@ -105,7 +106,8 @@ export default class Statistics extends Vue {
   }
 
   mounted() {
-    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+    const div = (this.$refs.chartWrapper as HTMLDivElement);
+    div.scrollLeft = div.scrollWidth;
   }
 
   beautify(string: string) {
@@ -125,7 +127,29 @@ export default class Statistics extends Vue {
     }
   }
 
+  get dataArray() {
+    const today = new Date();
+    const array = [];
+    for (let i = 0; i <= 29; i++) {
+      const dateString = dayjs(today)
+          .subtract(i, 'day')
+          .format('YYYY-MM-DD');
+      const found = _.find(this.recordList, {createdAt: dateString});
+      array.push({
+        date: dateString, value: found ? found.amount : 0
+      });
+    }
+    array.sort((a, b) => {
+      if (a.date > b.date) {return 1;} else if (a.date === b.date) {return 0;} else {return -1;}
+    });
+    return array;
+  }
+
   get option() {
+    const keys = this.dataArray.map(item => item.date);
+    const values = this.dataArray.map(item => item.value);
+    console.log('array');
+    console.log(this.dataArray);
     return {
       tooltip: {
         show: true, triggerOn: 'click',
@@ -139,13 +163,7 @@ export default class Statistics extends Vue {
       xAxis: {
 
         type: 'category',
-        data: [
-          '1', '2', '3', '4', '5', '6', '7',
-          '8', '9', '10', '11', '12', '13', '14',
-          '15', '16', '17', '18', '19', '20', '21',
-          '22', '23', '24', '25', '26', '27', '28',
-          '29', '30',
-        ],
+        data: keys,
         axisTick: {
           alignWithLabel: true //让刻度与数字对齐
         }
@@ -161,13 +179,7 @@ export default class Statistics extends Vue {
           symbol: 'circle',
           symbolSize: 15,
           itemStyle: {color: 'orange'},
-          data: [
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200
-          ],
+          data: values,
           type: 'line'
         }
       ]

@@ -27,6 +27,7 @@ import Tags from '@/components/Money/Tags.vue';
 import Tabs from '@/components/Tabs.vue';
 import {Component} from 'vue-property-decorator';
 import recordTypeList from '@/constants/recordTypeList';
+import dayjs from 'dayjs';
 
 @Component({
   components: {NumberPad, FormItem, Tags, Tabs}
@@ -42,7 +43,7 @@ export default class Money extends Vue {
     notes: '',
     type: '+',
     amount: 0,
-    createdAt: new Date().toISOString()
+    createdAt: dayjs(new Date().toISOString()).format('YYYY-MM-DD')
   };
 
   created() {
