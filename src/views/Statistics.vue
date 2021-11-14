@@ -127,12 +127,17 @@ export default class Statistics extends Vue {
 
   get option() {
     return {
-      tooltip: {show: true},
+      tooltip: {
+        show: true, triggerOn: 'click',
+        formatter: '{c}',
+        position: 'top'
+      },
       grid: {
         left: 0,
         right: 0,
       },
       xAxis: {
+
         type: 'category',
         data: [
           '1', '2', '3', '4', '5', '6', '7',
@@ -140,7 +145,10 @@ export default class Statistics extends Vue {
           '15', '16', '17', '18', '19', '20', '21',
           '22', '23', '24', '25', '26', '27', '28',
           '29', '30',
-        ]
+        ],
+        axisTick: {
+          alignWithLabel: true //让刻度与数字对齐
+        }
       },
       yAxis: {
         type: 'value',
@@ -150,7 +158,9 @@ export default class Statistics extends Vue {
       },
       series: [
         {
+          symbol: 'circle',
           symbolSize: 15,
+          itemStyle: {color: 'orange'},
           data: [
             120, 200, 150, 80, 70, 110, 130,
             120, 200, 150, 80, 70, 110, 130,
