@@ -75,6 +75,10 @@
   width: 430%; /*因为每屏要展示7天数据,一共是30天,所以需要将近5个屏来展示所有内容*/
   &-wrapper {
     overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 </style>
@@ -146,6 +150,7 @@ export default class Statistics extends Vue {
       },
       series: [
         {
+          symbolSize: 15,
           data: [
             120, 200, 150, 80, 70, 110, 130,
             120, 200, 150, 80, 70, 110, 130,
