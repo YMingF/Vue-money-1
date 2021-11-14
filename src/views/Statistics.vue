@@ -166,6 +166,14 @@ export default class Statistics extends Vue {
         data: keys,
         axisTick: {
           alignWithLabel: true //让刻度与数字对齐
+        },
+        axisLabel: {
+          formatter: function (value: string, index: number) {
+            // 格式化成月/日
+            let date = new Date(value);
+            let texts = [(date.getMonth() + 1), date.getDate() + '日'];
+            return texts.join('-');
+          }
         }
       },
       yAxis: {
